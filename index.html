@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Tracking Button Clicks</title>
+        <style>
+            .flex {
+                display: flex;
+            }
+
+            button {
+                padding: 2ex 2ex;
+                font-size: 300%;
+                font-family: monospace;
+                border-radius: 12%;
+                margin: 5px;
+                background-color: rgb(220, 167, 103);
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Введите 2 цифры: <span id="view"></span> </h1>
+        <div class="flex">
+            <button onclick="recordButtonClick(7)">7</button>
+            <button onclick="recordButtonClick(8)">8</button>
+            <button onclick="recordButtonClick(9)">9</button>
+        </div>
+        <div class="flex">
+            <button onclick="recordButtonClick(4)">4</button>
+            <button onclick="recordButtonClick(5)">5</button>
+            <button onclick="recordButtonClick(6)">6</button>
+        </div>
+        <div class="flex">
+            <button onclick="recordButtonClick(1)">1</button>
+            <button onclick="recordButtonClick(2)">2</button>
+            <button onclick="recordButtonClick(3)">3</button>
+        </div>
+        <div class="flex">
+            <button onclick="recordButtonClick(0)">0</button>
+            <button onclick="deleteButtonClick()">С</button>
+            <button onclick="helpButtonClick()">?</button>
+        </div>
+        <script>
+            let buttonClicks = [];
+            let i = 0;
+
+            function updateView() {
+                document.getElementById("view").textContent = buttonClicks.join("");
+            }
+
+            function helpButtonClick() {
+                window.location.href = `https://github.com/i5anin/i5anin.github.io/blob/main/README.md`;
+            }
+
+            function search() {
+                const queryParam = buttonClicks.join("");
+                updateView(); // Отобразить последовательность нажатий перед задержкой
+                //setTimeout(() => {
+                window.location.href = `https://ya.ru/search/?text=${queryParam}`;
+                //}, 1000); // Задержка в 1 секунду перед переходом по ссылке
+            }
+
+            function deleteButtonClick() {
+                i--;
+                console.log(buttonClicks);
+                buttonClicks.pop(); // Удалить последний символ из последовательности
+                updateView(); // Отобразить последовательность нажатий после каждого нажатия
+            }
+
+            function recordButtonClick(buttonNumber) {
+                i++;
+                console.log(buttonClicks);
+                buttonClicks.push(buttonNumber);
+                updateView(); // Отобразить последовательность нажатий после каждого нажатия
+                if (i == 2) {
+                    search();
+                    i = 0;
+                    buttonClicks = [];
+                }
+            }
+        </script>
+
+        <p>
+            <a href="https://validator.w3.org/nu/?doc=https://i5anin.github.io/" style="text-decoration:none">
+                <img src="https://bot.pf-forum.ru/assets/wsc5.png" alt="Valid HTML 5" style="height:45px">
+            </a>
+            <a href="https://jigsaw.w3.org/css-validator/validator?uri=https://i5anin.github.io/"
+                style="text-decoration:none">
+                <img style="height:45px;" src="https://jigsaw.w3.org/css-validator/images/vcss" alt="Правильный CSS!">
+            </a>
+        </p>
+    </body>
+
+</html>
