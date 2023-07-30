@@ -5,8 +5,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Telegram Web App</title>
         <style>
+            body {
+                font-family: monospace;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                /* Set the height of the body to the full viewport height */
+                margin: 0;
+            }
+
             .flex {
                 display: flex;
+                flex-direction: column;
+                /* Stack the buttons vertically */
+                align-items: center;
+                /* Center the buttons horizontally */
             }
 
             button {
@@ -22,15 +36,6 @@
                 color: rgb(230, 0, 255);
                 justify-content: center;
                 font-size: 175%;
-            }
-
-            body {
-                font-family: monospace;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 63vh;
-                margin: 0;
             }
         </style>
     </head>
