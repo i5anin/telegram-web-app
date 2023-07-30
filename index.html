@@ -10,7 +10,7 @@
             }
 
             button {
-                padding: 1.4ex 1.4ex;
+                padding: 0.7ex 1.4ex;
                 font-size: 300%;
                 font-family: monospace;
                 border-radius: 12%;
@@ -20,9 +20,12 @@
 
             .color {
                 color: rgb(230, 0, 255);
+                justify-content: center;
+                font-size: 175%;
             }
 
             body {
+                font-family: monospace;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -35,6 +38,7 @@
     <body>
         <div class="container">
             <h1 class="color">Введите 2 цифры: <span id="view"></span></h1>
+
             <div class="flex">
                 <button onclick="recordButtonClick(7)">7</button>
                 <button onclick="recordButtonClick(8)">8</button>
