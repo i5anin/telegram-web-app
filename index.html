@@ -2,26 +2,33 @@
 <html lang="en">
 
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Telegram Web App</title>
         <style>
+            .container {
+                max-width: 100vh;
+                /* Change width to max-width */
+            }
+
             .flex {
                 display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
             button {
-                padding: 0.7ex 1.4ex;
-                font-size: 300%;
+                padding: clamp(0.7ex, 1.4ex + 2vmin, 2.5ex);
+                font-size: clamp(2.7vmin, 300%, 6vmin);
                 font-family: monospace;
                 border-radius: 12%;
-                margin: 5px;
+                margin: clamp(5px, 1vmin, 20px);
                 background-color: rgb(196, 184, 171);
             }
 
             .color {
                 color: rgb(17, 222, 188);
                 justify-content: center;
-                font-size: 175%;
+                font-size: clamp(4vmin, 175%, 8vmin);
             }
 
             body {
@@ -30,6 +37,10 @@
                 justify-content: center;
                 align-items: center;
                 margin: 0;
+            }
+
+            .ws3 {
+                height: 45px;
             }
         </style>
     </head>
@@ -62,12 +73,11 @@
             <p>
                 <a href="https://validator.w3.org/nu/?doc=https://i5anin.github.io/telegram-web-app"
                     style="text-decoration:none">
-                    <img src="https://bot.pf-forum.ru/assets/wsc5.png" alt="Valid HTML 5" style="height:45px">
+                    <img src="https://bot.pf-forum.ru/assets/wsc5.png" alt="Valid HTML 5" class="ws3">
                 </a>
                 <a href="https://jigsaw.w3.org/css-validator/validator?uri=https://i5anin.github.io/telegram-web-app"
                     style="text-decoration:none">
-                    <img style="height:45px;" src="https://jigsaw.w3.org/css-validator/images/vcss"
-                        alt="Правильный CSS!">
+                    <img class="ws3" src="https://jigsaw.w3.org/css-validator/images/vcss" alt="Правильный CSS!">
                 </a>
             </p>
         </div>
@@ -85,34 +95,29 @@
 
             function search() {
                 const queryParam = buttonClicks.join("");
-                updateView(); // Отобразить последовательность нажатий перед задержкой
-                //setTimeout(() => {
+                updateView();
                 window.location.href = `https://t.me/geopricebot?start=${queryParam}`;
-
-                //}, 1000); // Задержка в 1 секунду перед переходом по ссылке
             }
 
             function deleteButtonClick() {
                 i--;
                 console.log(buttonClicks);
-                buttonClicks.pop(); // Удалить последний символ из последовательности
-                updateView(); // Отобразить последовательность нажатий после каждого нажатия
+                buttonClicks.pop();
+                updateView();
             }
 
             function recordButtonClick(buttonNumber) {
                 i++;
                 console.log(buttonClicks);
                 buttonClicks.push(buttonNumber);
-                updateView(); // Отобразить последовательность нажатий после каждого нажатия
-                if (i == 2) {
+                updateView();
+                if (i == 6) {
                     search();
                     i = 0;
                     buttonClicks = [];
                 }
             }
         </script>
-
-
     </body>
 
 </html>
