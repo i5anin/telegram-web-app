@@ -6,7 +6,7 @@ let buttonClicks = [];
 let i = 0;
 
 function updateView() {
-  const inputText = buttonClicks.join(" ");
+  const inputText = buttonClicks.join("");
   const formattedText = formatAsDate(inputText);
   document.getElementById("view").textContent = formattedText;
 
@@ -39,6 +39,9 @@ function updateView() {
     else if (inputLength === 3) {
       // Включаем все кнопки
       button.disabled = false;
+      if (buttonClicks[2] === 1) {
+        button.disabled = buttonNumber > 2;
+      }
     }
     // Логика кнопок при длине ввода 4
     else if (inputLength === 4) {
@@ -63,7 +66,7 @@ function formatAsDate(inputText) {
     const month = inputText.slice(2, 4);
     const yearPrefix = inputText.slice(4, 5);
     let year;
-    if (yearPrefix >= 7 && yearPrefix <= 9) {
+    if (yearPrefix >= "7" && yearPrefix <= "9") {
       // Interpret years 70-99 as 19XX
       year = `19${inputText.slice(4)}`;
     } else {
