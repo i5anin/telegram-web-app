@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let buttonClicks = [];
 let i = 0;
+let day = "";
+let month = "";
+let year = "";
 
 function updateView() {
   const inputText = buttonClicks.join("");
@@ -57,38 +60,18 @@ function updateView() {
 }
 
 function formatAsDate(inputText) {
-  if (inputText.length === 1) {
-    return `${inputText}`;
+  if (inputText.length === 0) {
+    return "DD.MM.YYYY";
+  } else if (inputText.length === 1) {
+    return `${inputText}.MM.YYYY`;
   } else if (inputText.length === 2) {
-    return `${inputText}.`;
+    return `${inputText}.MM.YYYY`;
   } else if (inputText.length === 3) {
-    const day = inputText.slice(0, 1);
-    const month = inputText.slice(1, 3);
-    return `${day}.${month}`;
+    return `${inputText.slice(0, 2)}.${inputText[2]}.YYYY`;
   } else if (inputText.length === 4) {
-    const day = inputText.slice(0, 2);
-    const month = inputText.slice(2, 4);
-    return `${day}.${month}.`;
+    return `${inputText.slice(0, 2)}.${inputText.slice(2, 4)}.YYYY`;
   } else if (inputText.length === 5) {
-    const day = inputText.slice(0, 2);
-    const month = inputText.slice(2, 4);
-    const year = inputText.slice(4);
-    return `${day}.${month}.${year}`;
-  } else if (inputText.length === 8) {
-    const day = inputText.slice(0, 2);
-    const month = inputText.slice(2, 4);
-    const yearPrefix = inputText.slice(4, 5);
-    let year;
-    if (yearPrefix >= "7" && yearPrefix <= "9") {
-      // Interpret years 70-99 as 19XX
-      year = `19${inputText.slice(4)}`;
-    } else {
-      // Interpret years 00-69 as 20XX
-      year = `20${inputText.slice(4)}`;
-    }
-    return `${day}.${month}.${year}`;
-  } else {
-    return inputText;
+    return `${inputText.slice(0, 2)}.${inputText.slice(2, 4)}.${inputText[4]}`;
   }
 }
 
@@ -97,25 +80,13 @@ function helpButtonClick() {
 }
 
 function search() {
-  const day = buttonClicks[0].toString().padStart(2, "0");
-  const month = buttonClicks[1].toString().padStart(2, "0");
-  const yearPrefix = buttonClicks[2].toString();
-  let year;
-  if (yearPrefix >= "7" && yearPrefix <= "9") {
-    // Interpret years 70-99 as 19XX
-    year = `19${buttonClicks.slice(2).join("")}`;
-  } else {
-    // Interpret years 00-69 as 20XX
-    year = `20${buttonClicks.slice(2).join("")}`;
-  }
-
-  updateView();
   const formattedDate = `${day}.${month}.${year}`;
   document.getElementById("view").textContent = formattedDate; // Отображаем дату
   window.location.href = `https://t.me/geopricebot?start=${formattedDate.replace(
     /\./g,
     "-"
   )}`; // Передаем дату в нужном формате
+  updateView(); // Move the updateView() call here
 }
 
 function deleteButtonClick() {
@@ -123,6 +94,7 @@ function deleteButtonClick() {
   console.log(buttonClicks);
   buttonClicks.pop();
   updateView();
+  updateDateVariables();
 }
 
 function recordButtonClick(buttonNumber) {
@@ -130,9 +102,24 @@ function recordButtonClick(buttonNumber) {
   console.log(buttonClicks);
   buttonClicks.push(buttonNumber);
   updateView();
-  if (i === 6) {
+
+  if (i === 2) {
+    day = buttonClicks.join("");
+  } else if (i === 4) {
+    month = buttonClicks.slice(2).join("");
+  } else if (i === 6) {
+    year = buttonClicks.slice(4).join("");
+    updateDateVariables();
     search();
     i = 0;
     buttonClicks = [];
+  }
+}
+
+function updateDateVariables() {
+  if (year >= 0 && year <= 50) {
+    year = `20${year}`;
+  } else if (year > 50 && year <= 99) {
+    year = `19${year}`;
   }
 }
