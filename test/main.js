@@ -57,12 +57,23 @@ function updateView() {
 }
 
 function formatAsDate(inputText) {
-  if (inputText.length === 2) {
-    return `${inputText}-`;
+  if (inputText.length === 1) {
+    return `${inputText}`;
+  } else if (inputText.length === 2) {
+    return `${inputText}.`;
+  } else if (inputText.length === 3) {
+    const day = inputText.slice(0, 1);
+    const month = inputText.slice(1, 3);
+    return `${day}.${month}`;
   } else if (inputText.length === 4) {
     const day = inputText.slice(0, 2);
     const month = inputText.slice(2, 4);
-    return `${day}-${month}-`;
+    return `${day}.${month}.`;
+  } else if (inputText.length === 5) {
+    const day = inputText.slice(0, 2);
+    const month = inputText.slice(2, 4);
+    const year = inputText.slice(4);
+    return `${day}.${month}.${year}`;
   } else if (inputText.length === 8) {
     const day = inputText.slice(0, 2);
     const month = inputText.slice(2, 4);
@@ -75,7 +86,7 @@ function formatAsDate(inputText) {
       // Interpret years 00-69 as 20XX
       year = `20${inputText.slice(4)}`;
     }
-    return `${day}-${month}-${year}`;
+    return `${day}.${month}.${year}`;
   } else {
     return inputText;
   }
@@ -86,9 +97,25 @@ function helpButtonClick() {
 }
 
 function search() {
-  const queryParam = buttonClicks.join("");
+  const day = buttonClicks[0].toString().padStart(2, "0");
+  const month = buttonClicks[1].toString().padStart(2, "0");
+  const yearPrefix = buttonClicks[2].toString();
+  let year;
+  if (yearPrefix >= "7" && yearPrefix <= "9") {
+    // Interpret years 70-99 as 19XX
+    year = `19${buttonClicks.slice(2).join("")}`;
+  } else {
+    // Interpret years 00-69 as 20XX
+    year = `20${buttonClicks.slice(2).join("")}`;
+  }
+
   updateView();
-  window.location.href = `https://t.me/geopricebot?start=${queryParam}`;
+  const formattedDate = `${day}.${month}.${year}`;
+  document.getElementById("view").textContent = formattedDate; // Отображаем дату
+  window.location.href = `https://t.me/geopricebot?start=${formattedDate.replace(
+    /\./g,
+    "-"
+  )}`; // Передаем дату в нужном формате
 }
 
 function deleteButtonClick() {
