@@ -4,10 +4,10 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Telegram Web App</title>
-        <link rel="stylesheet" href="reset.css">
         <style>
             .container {
-                max-width: 100vmin;
+                max-width: 100vh;
+                /* Change width to max-width */
             }
 
             .flex {
@@ -28,7 +28,7 @@
             .color {
                 color: rgb(17, 222, 188);
                 justify-content: center;
-                font-size: 4vmin;
+                font-size: clamp(4vmin, 175%, 8vmin);
             }
 
             body {
@@ -40,33 +40,32 @@
             }
 
             .ws3 {
-                height: 6vmin;
+                height: 45px;
             }
         </style>
     </head>
 
     <body>
         <div class="container">
-            <h1 class="color">Введите дату: </h1>
-            <span id="view"></span>
+            <h1 class="color">Введите 2 цифры: <span id="view"></span></h1>
 
             <div class="flex">
-                <button onclick="recordButtonClick(7)" id="button-7">7</button>
-                <button onclick="recordButtonClick(8)" id="button-8">8</button>
-                <button onclick="recordButtonClick(9)" id="button-9">9</button>
+                <button onclick="recordButtonClick(7)">7</button>
+                <button onclick="recordButtonClick(8)">8</button>
+                <button onclick="recordButtonClick(9)">9</button>
             </div>
             <div class="flex">
-                <button onclick="recordButtonClick(4)" id="button-4">4</button>
-                <button onclick="recordButtonClick(5)" id="button-5">5</button>
-                <button onclick="recordButtonClick(6)" id="button-6">6</button>
+                <button onclick="recordButtonClick(4)">4</button>
+                <button onclick="recordButtonClick(5)">5</button>
+                <button onclick="recordButtonClick(6)">6</button>
             </div>
             <div class="flex">
-                <button onclick="recordButtonClick(1)" id="button-1">1</button>
-                <button onclick="recordButtonClick(2)" id="button-2">2</button>
-                <button onclick="recordButtonClick(3)" id="button-3">3</button>
+                <button onclick="recordButtonClick(1)">1</button>
+                <button onclick="recordButtonClick(2)">2</button>
+                <button onclick="recordButtonClick(3)">3</button>
             </div>
             <div class="flex">
-                <button onclick="recordButtonClick(0)" id="button-0">0</button>
+                <button onclick="recordButtonClick(0)">0</button>
                 <button onclick="deleteButtonClick()">C</button>
                 <button onclick="helpButtonClick()">?</button>
             </div>
@@ -87,51 +86,7 @@
             let i = 0;
 
             function updateView() {
-                const inputText = buttonClicks.join("");
-                const formattedText = formatAsDate(inputText);
-                document.getElementById("view").textContent = formattedText;
-
-                // Disable buttons based on input length
-                const inputLength = inputText.length;
-                const buttons = document.querySelectorAll("button");
-                buttons.forEach((button) => {
-                    const buttonNumber = Number(button.textContent);
-                    if (inputLength === 0) {
-                        // All buttons are active when no input
-                        button.disabled = false;
-                    } else if (inputLength === 1) {
-                        // Enable buttons 0-3 after the first input
-                        button.disabled = buttonNumber > 3;
-                    } else if (inputLength === 2) {
-                        // Enable buttons 0-9 after the second input
-                        button.disabled = buttonNumber > 9;
-                    } else if (inputLength === 3) {
-                        // Enable buttons 0-1 after the third input
-                        button.disabled = buttonNumber > 1;
-                    } else {
-                        // Disable all buttons after the fourth input
-                        button.disabled = true;
-                    }
-                });
-
-                // Enable the "C" button always
-                document.getElementById("button-0").disabled = false;
-            }
-
-            function formatAsDate(inputText) {
-                // Format the input as a date (12.07.2023)
-                if (inputText.length >= 2 && inputText.length <= 4) {
-                    const day = inputText.slice(0, 2);
-                    const month = inputText.slice(2, 4);
-                    return `${day}.${month}.`;
-                } else if (inputText.length > 4) {
-                    const day = inputText.slice(0, 2);
-                    const month = inputText.slice(2, 4);
-                    const year = inputText.slice(4);
-                    return `${day}.${month}.${year}`;
-                } else {
-                    return inputText;
-                }
+                document.getElementById("view").textContent = buttonClicks.join("");
             }
 
             function helpButtonClick() {
@@ -156,7 +111,7 @@
                 console.log(buttonClicks);
                 buttonClicks.push(buttonNumber);
                 updateView();
-                if (i === 6) {
+                if (i == 6) {
                     search();
                     i = 0;
                     buttonClicks = [];
