@@ -57,11 +57,13 @@ function updateView() {
 }
 
 function formatAsDate(inputText) {
-  if (inputText.length >= 2 && inputText.length <= 4) {
+  if (inputText.length === 2) {
+    return `${inputText}-`;
+  } else if (inputText.length === 4) {
     const day = inputText.slice(0, 2);
     const month = inputText.slice(2, 4);
-    return `${day}.${month}.`;
-  } else if (inputText.length === 5) {
+    return `${day}-${month}-`;
+  } else if (inputText.length === 8) {
     const day = inputText.slice(0, 2);
     const month = inputText.slice(2, 4);
     const yearPrefix = inputText.slice(4, 5);
@@ -73,7 +75,7 @@ function formatAsDate(inputText) {
       // Interpret years 00-69 as 20XX
       year = `20${inputText.slice(4)}`;
     }
-    return `${day}.${month}.${year}`;
+    return `${day}-${month}-${year}`;
   } else {
     return inputText;
   }
