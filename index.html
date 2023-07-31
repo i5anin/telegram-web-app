@@ -5,15 +5,50 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Telegram Web App</title>
         <link rel="stylesheet" href="reset.css">
-        <link rel="stylesheet" href="style.css">
+        <style>
+            .container {
+                max-width: 100vmin;
+            }
+
+            .flex {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            button {
+                padding: clamp(0.7ex, 1.4ex + 2vmin, 2.5ex);
+                font-size: clamp(2.7vmin, 300%, 6vmin);
+                font-family: monospace;
+                border-radius: 12%;
+                margin: clamp(5px, 1vmin, 20px);
+                background-color: rgb(196, 184, 171);
+            }
+
+            .color {
+                color: rgb(17, 222, 188);
+                justify-content: center;
+                font-size: 4vmin;
+            }
+
+            body {
+                font-family: monospace;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+            }
+
+            .ws3 {
+                height: 6vmin;
+            }
+        </style>
     </head>
 
     <body>
         <div class="container">
-
-            <input type="date">
             <h1 class="color">Введите дату: </h1>
-            <h2 class="color" id="view"></h2>
+            <span id="view"></span>
 
             <div class="flex">
                 <button onclick="recordButtonClick(7)" id="button-7">7</button>
@@ -47,7 +82,87 @@
                 </a>
             </p>
         </div>
-        <script src="main.js"></script>
+        <script>
+            let buttonClicks = [];
+            let i = 0;
+
+            function updateView() {
+                const inputText = buttonClicks.join("");
+                const formattedText = formatAsDate(inputText);
+                document.getElementById("view").textContent = formattedText;
+
+                // Disable buttons based on input length
+                const inputLength = inputText.length;
+                const buttons = document.querySelectorAll("button");
+                buttons.forEach((button) => {
+                    const buttonNumber = Number(button.textContent);
+                    if (inputLength === 0) {
+                        // All buttons are active when no input
+                        button.disabled = false;
+                    } else if (inputLength === 1) {
+                        // Enable buttons 0-3 after the first input
+                        button.disabled = buttonNumber > 3;
+                    } else if (inputLength === 2) {
+                        // Enable buttons 0-9 after the second input
+                        button.disabled = buttonNumber > 9;
+                    } else if (inputLength === 3) {
+                        // Enable buttons 0-1 after the third input
+                        button.disabled = buttonNumber > 1;
+                    } else {
+                        // Disable all buttons after the fourth input
+                        button.disabled = true;
+                    }
+                });
+
+                // Enable the "C" button always
+                document.getElementById("button-0").disabled = false;
+            }
+
+            function formatAsDate(inputText) {
+                // Format the input as a date (12.07.2023)
+                if (inputText.length >= 2 && inputText.length <= 4) {
+                    const day = inputText.slice(0, 2);
+                    const month = inputText.slice(2, 4);
+                    return `${day}.${month}.`;
+                } else if (inputText.length > 4) {
+                    const day = inputText.slice(0, 2);
+                    const month = inputText.slice(2, 4);
+                    const year = inputText.slice(4);
+                    return `${day}.${month}.${year}`;
+                } else {
+                    return inputText;
+                }
+            }
+
+            function helpButtonClick() {
+                window.location.href = `https://github.com/i5anin/telegram-web-app`;
+            }
+
+            function search() {
+                const queryParam = buttonClicks.join("");
+                updateView();
+                window.location.href = `https://t.me/geopricebot?start=${queryParam}`;
+            }
+
+            function deleteButtonClick() {
+                i--;
+                console.log(buttonClicks);
+                buttonClicks.pop();
+                updateView();
+            }
+
+            function recordButtonClick(buttonNumber) {
+                i++;
+                console.log(buttonClicks);
+                buttonClicks.push(buttonNumber);
+                updateView();
+                if (i === 6) {
+                    search();
+                    i = 0;
+                    buttonClicks = [];
+                }
+            }
+        </script>
     </body>
 
 </html>
