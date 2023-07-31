@@ -37,6 +37,7 @@ body {
 
 /* Style for disabled buttons */
 button:disabled {
+  color: gray;
   background-color: #ccc;
   cursor: not-allowed;
 }
