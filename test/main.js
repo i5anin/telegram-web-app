@@ -111,18 +111,18 @@ function handleKeyDown(event) {
   }
 }
 
-function pasteFromClipboard() {
-  navigator.clipboard
-    .readText()
-    .then((text) => {
-      const validDigits = text.replace(/[^\d]/g, ""); // Remove non-numeric characters
-      if (validDigits.length <= 8) {
-        for (const char of validDigits) {
-          recordButtonClick(Number(char));
-        }
-      }
-    })
-    .catch((error) => {
-      console.error("Failed to read clipboard: ", error);
-    });
-}
+// function pasteFromClipboard() {
+//   navigator.clipboard
+//     .readText()
+//     .then((text) => {
+//       const validDigits = text.replace(/[^\d]/g, ""); // Remove non-numeric characters
+//       if (validDigits.length <= 8) {
+//         for (const char of validDigits) {
+//           recordButtonClick(Number(char));
+//         }
+//       }
+//     })
+//     .catch((error) => {
+//       console.error("Failed to read clipboard: ", error);
+//     });
+// }
