@@ -115,7 +115,7 @@ function pasteFromClipboard() {
   navigator.clipboard
     .readText()
     .then((text) => {
-      const validDigits = text.replace(/[^\d]/g, ""); // Remove non-numeric characters
+      const validDigits = text.replace(/[^\d]/g, ""); // Удаление нечисловых символов
       if (validDigits.length <= 8) {
         for (const char of validDigits) {
           recordButtonClick(Number(char));
