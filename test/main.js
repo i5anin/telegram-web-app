@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   updateView();
+  document.addEventListener("keydown", handleKeyDown);
 });
 
 let buttonClicks = [];
@@ -13,47 +14,26 @@ function updateView() {
   const formattedText = formatAsDate(inputText);
   document.getElementById("view").textContent = formattedText;
 
-  // Отключаем или включаем кнопки в зависимости от длины введенных данных
   const inputLength = inputText.length;
   const buttons = document.querySelectorAll("button");
   buttons.forEach((button) => {
     const buttonNumber = Number(button.textContent);
 
-    // Логика кнопок при длине ввода 0
     if (inputLength === 0) {
-      // Включаем кнопки 0-3
       button.disabled = buttonNumber > 3;
-    }
-    // Логика кнопок при длине ввода 1
-    else if (inputLength === 1) {
-      // Включаем все кнопки
+    } else if (inputLength === 1) {
       button.disabled = false;
-      // Если предыдущий символ 3, то кнопки 4-9 становятся неактивными
       if (buttonClicks[0] === 3) {
         button.disabled = buttonNumber > 1;
       }
-    }
-    // Логика кнопок при длине ввода 2
-    else if (inputLength === 2) {
-      // Включаем кнопки 0-1
+    } else if (inputLength === 2) {
       button.disabled = buttonNumber > 1;
-    }
-    // Логика кнопок при длине ввода 3
-    else if (inputLength === 3) {
-      // Включаем все кнопки
+    } else if (inputLength === 3) {
       button.disabled = false;
       if (buttonClicks[2] === 1) {
         button.disabled = buttonNumber > 2;
       }
-    }
-    // Логика кнопок при длине ввода 4
-    else if (inputLength === 4) {
-      // Включаем все кнопки
-      button.disabled = false;
-    }
-    // Логика кнопок при длине ввода 5
-    else if (inputLength === 5) {
-      // Включаем все кнопки
+    } else if (inputLength === 4 || inputLength === 5) {
       button.disabled = false;
     }
   });
@@ -81,17 +61,16 @@ function helpButtonClick() {
 
 function search() {
   const formattedDate = `${day}.${month}.${year}`;
-  document.getElementById("view").textContent = formattedDate; // Отображаем дату
+  document.getElementById("view").textContent = formattedDate;
   window.location.href = `https://t.me/geopricebot?start=${formattedDate.replace(
     /\./g,
     "-"
-  )}`; // Передаем дату в нужном формате
-  updateView(); // Move the updateView() call here
+  )}`;
+  updateView();
 }
 
 function deleteButtonClick() {
   i--;
-  console.log(buttonClicks);
   buttonClicks.pop();
   updateView();
   updateDateVariables();
@@ -99,7 +78,6 @@ function deleteButtonClick() {
 
 function recordButtonClick(buttonNumber) {
   i++;
-  console.log(buttonClicks);
   buttonClicks.push(buttonNumber);
   updateView();
 
@@ -122,4 +100,29 @@ function updateDateVariables() {
   } else if (year > 50 && year <= 99) {
     year = `19${year}`;
   }
+}
+
+function handleKeyDown(event) {
+  const key = event.key;
+  if (/[0-9]/.test(key)) {
+    recordButtonClick(Number(key));
+  } else if (key === "Backspace") {
+    deleteButtonClick();
+  }
+}
+
+function pasteFromClipboard() {
+  navigator.clipboard
+    .readText()
+    .then((text) => {
+      const validDigits = text.replace(/[^\d]/g, ""); // Remove non-numeric characters
+      if (validDigits.length <= 8) {
+        for (const char of validDigits) {
+          recordButtonClick(Number(char));
+        }
+      }
+    })
+    .catch((error) => {
+      console.error("Failed to read clipboard: ", error);
+    });
 }
