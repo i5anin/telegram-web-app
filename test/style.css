@@ -9,11 +9,11 @@
 }
 
 button {
-  padding: clamp(0.7ex, 1.4ex + 2vmin, 2.5ex);
-  font-size: clamp(2.7vmin, 300%, 6vmin);
+  padding: 1em;
+  font-size: 3em;
   font-family: monospace;
   border-radius: 12%;
-  margin: clamp(5px, 1vmin, 20px);
+  margin: 0.2em;
   background-color: rgb(196, 184, 171);
 }
 
