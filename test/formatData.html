@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru"> <!-- added lang attribute to declare the language of the document -->
+
+    <head>
+        <link rel="stylesheet" href="reset.css">
+        <style>
+            .red {
+                color: red;
+            }
+
+            .gray {
+                color: gray;
+            }
+
+            a {
+                display: block;
+                color: black;
+            }
+        </style>
+        <title>Format Input</title> <!-- added title element as a required child of head element -->
+    </head>
+
+    <body>
+
+        <a id="output0"></a>
+        <a id="output1"></a>
+        <a id="output2"></a>
+
+        <script>
+
+            // test data после отладки данные приходят с backend ---
+            let input0 = "^04^.^08^.2~023"; //4 8 2 красные
+            let input1 = "^08^.12^.2~023"; //8 12 2 красные
+            let input2 = "^01^.^03^.2~023"; //1 3 2 красные
+            //------------------------------------------------------
+
+            //^ значит следующий 1 символ черный 
+            //~ значит следующие все символы серые
+            //остальные красные
+
+            function formatInput(input) {
+                let output = "";
+                let plainOutput = input.replace(/[~^]/g, "");
+                let grayMode = false; // флаг для режима серого цвета
+
+                for (let i = 0; i < input.length; i++) {
+                    let char = input[i];
+                    if (char === "^") {
+                        continue;
+                    } else if (char === "~") {
+                        grayMode = true; // включить режим серого цвета
+                        continue;
+                    } else if (input[i - 1] === "^") {
+                        output += char;
+                    } else if (grayMode || !isNaN(char)) {
+                        output += `<span class="${grayMode ? 'gray' : 'red'}">${char}</span>`;
+                    } else {
+                        output += char;
+                    }
+                }
+
+                return [output, plainOutput];
+            }
+
+            let [output0, plainOutput0] = formatInput(input0);
+            let [output1, plainOutput1] = formatInput(input1);
+            let [output2, plainOutput2] = formatInput(input2);
+
+            document.getElementById("output0").innerHTML = output0;
+            document.getElementById("output1").innerHTML = output1;
+            document.getElementById("output2").innerHTML = output2;
+
+            document.getElementById("output0").href = "#" + plainOutput0;
+            document.getElementById("output1").href = "#" + plainOutput1;
+            document.getElementById("output2").href = "#" + plainOutput2;
+        </script>
+
+    </body>
+
+</html>
